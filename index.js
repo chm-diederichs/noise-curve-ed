@@ -12,6 +12,7 @@ const ALG = 'Ed25519'
 module.exports = {
   DHLEN,
   PKLEN,
+  SCALARLEN,
   SKLEN,
   ALG,
   name: ALG,

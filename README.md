@@ -16,6 +16,7 @@ const handshake = new Noise(pattern, initiator, staticKeyPair, { curve })
 
 `DHLEN` = 32
 `PKLEN` = 32
+`SCALARLEN` = 32
 `SKLEN` = 64
 `ALG` = 'Ed25519'
 
