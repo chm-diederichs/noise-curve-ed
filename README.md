@@ -26,10 +26,10 @@ Generate a new keypair, optionally pass in a preexisting `privKey`. Return value
 ```
 {
   publicKey,
-  secretKey
+  secretKey,
 }
 ```
 
-#### `dh(pk, lsk)`
+#### `dh(publicKey, { secretKey, scalar })`
 
-Perform DH between `pk` and `lsk` and return the result.
+Perform DH between `publicKey` and `secretKey`/`scalar` and return the result.
