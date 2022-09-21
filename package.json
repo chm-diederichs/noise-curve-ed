@@ -23,6 +23,7 @@
     "sodium-universal": "^3.0.4"
   },
   "devDependencies": {
+    "hypercore-crypto-tweak": "github:holepunchto/hypercore-crypto-tweak",
     "noise-handshake": "^1.1.0",
     "standard": "^16.0.3",
     "tape": "^5.2.2"

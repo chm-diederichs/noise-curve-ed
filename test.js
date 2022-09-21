@@ -1,6 +1,7 @@
 const Noise = require('noise-handshake')
-const curve = require('./')
+const tweak = require('hypercore-crypto-tweak')
 const test = require('tape')
+const curve = require('./')
 
 test('XX', t => {
   const initiator = new Noise('XX', true, null, { curve })
@@ -9,17 +10,37 @@ test('XX', t => {
   initiator.initialise(Buffer.alloc(0))
   responder.initialise(Buffer.alloc(0))
 
-  while (!initiator.handshakeComplete) {
-    const message = initiator.send()
-    responder.recv(message)
+  const message = initiator.send()
+  responder.recv(message)
 
-    if (!responder.handshakeComplete) {
-      const reply = responder.send()
-      initiator.recv(reply)
-    }
-  }
+  const reply = responder.send()
+  initiator.recv(reply)
 
-  t.deepEqual(initiator.rx.key, responder.tx.key)
-  t.deepEqual(initiator.tx.key, responder.rx.key)
+  t.deepEqual(initiator.rx, responder.tx)
+  t.deepEqual(initiator.tx, responder.rx)
+  t.end()
+})
+
+test('XX tweaked', t => {
+  const ibase = curve.generateKeyPair()
+  const rbase = curve.generateKeyPair()
+
+  const ikp = tweak(ibase, 'initiator').keyPair
+  const rkp = tweak(rbase, 'responder').keyPair
+
+  const initiator = new Noise('XX', true, ikp, { curve })
+  const responder = new Noise('XX', false, rkp, { curve })
+
+  initiator.initialise(Buffer.alloc(0))
+  responder.initialise(Buffer.alloc(0))
+
+  const message = initiator.send()
+  responder.recv(message)
+
+  const reply = responder.send()
+  initiator.recv(reply)
+
+  t.deepEqual(initiator.rx, responder.tx)
+  t.deepEqual(initiator.tx, responder.rx)
   t.end()
 })
